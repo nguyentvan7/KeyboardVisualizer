@@ -1,15 +1,9 @@
-//TODO: Add animation.
+//TODO: Store keypress animations in a data structure so they can all be redrawn.
 //TODO: Create animations simiar to piano visualizers.
 
-final int RANDOM = 0;
-final int FIXED = 1;
-int size = 1500;
-int mode = RANDOM;
+final int size = 1500;
 
-int x = 0;
-int y = 0;
-int val = 0;
-int rad = 0;
+ArrayList<VisualizePoint> vps = new ArrayList<VisualizePoint>();
 
 void settings()
 {
@@ -40,17 +34,16 @@ void draw()
   //    circle(x, y, 150);
   //  }
   //}
-      
-    
-  if (rad > 0)
+  
+  background(0);
+  // Iterate backwards to ensure indexing stays the same.
+  for (int i = vps.size() - 1; i >= 0; i--)
   {
-    background(0);
-    circle(x, y, rad);
-    //println(x + " " + y + " " + rad + " " + createColor(val));
-    //delay(100);
-    rad -= 1;
-    x = x + floor(cos((rad/25.0)*PI));
-    y -= 5;
+    // Update returns false, indicating element must be removed.
+    if (!vps.get(i).update())
+    {
+      vps.remove(i);
+    }
   }
 }
 
@@ -58,11 +51,21 @@ void keyPressed()
 {
   if (key != CODED)
   {
-    x = int(random(size));
-    y = int(random(size - 200)) + 200;
-    val = int(key);
-    fill(createColor(val));
-    rad = 50;
+    int val = int(key);
+    VisualizePoint vp = new VisualizePoint(val);
+    vps.add(vp);
+    int amount = int(random(6)) + 3
+    ;
+    for (int i = 0; i < amount; i++) 
+    {
+      VisualizePoint smallVp = new VisualizePoint(val);
+      int x = int(random(100)) - 50;
+      int y = int(random(50)) - 90;
+      smallVp.x = x + vp.x;
+      smallVp.y = y + vp.y;
+      smallVp.rad = int(random(30)) + 30;
+      vps.add(smallVp);
+    }
   }
 }
 
