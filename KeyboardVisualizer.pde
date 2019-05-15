@@ -1,19 +1,19 @@
-//TODO: Store keypress animations in a data structure so they can all be redrawn.
-//TODO: Create animations simiar to piano visualizers.
+//TODO: Add sound.
 
-final int size = 1500;
+final int size = 1700;
 
 ArrayList<VisualizePoint> vps = new ArrayList<VisualizePoint>();
 
 void settings()
 {
-  size(size, size);  
+  size(size, size);
 }
 
 void setup()
 {
   background(0);
   noStroke();
+  frameRate(120);
 }
 
 void draw()
